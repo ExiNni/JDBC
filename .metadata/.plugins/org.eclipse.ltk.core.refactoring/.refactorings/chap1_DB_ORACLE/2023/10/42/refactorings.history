@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;chap1_DB_ORACLE/설명적는란/select_while.txt&apos; to &apos;select_selectAll(while).txt&apos;" description="Rename resource &apos;select_while.txt&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="설명적는란/select_while.txt" name="select_selectAll(while).txt" stamp="1697526171797" updateReferences="true"/>
+</session>
