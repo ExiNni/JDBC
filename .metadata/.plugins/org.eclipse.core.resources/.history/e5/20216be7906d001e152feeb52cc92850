@@ -1,0 +1,314 @@
+package com.kh.db.oracledb.CRUD.pre;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class practice1 {
+	public static void main(String[] args) {
+		operating_hour();
+	}
+
+	static void cafe() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String cafe = "SELECT * FROM CAFES ORDER BY CAFE_ID";
+			PreparedStatement ps = con.prepareStatement(cafe);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("cafe_id");
+				String b = result1.getString("name");
+				String c = result1.getString("address");
+				String d = result1.getString("phone_number");
+				String e = result1.getString("operating_hours");
+
+				System.out.println("cafe_id: " + a + ", name: " + b);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	static void cafeMenu() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String cafeMenu = "SELECT * FROM MENU WHERE CAFE_ID = 4 ";
+			PreparedStatement ps = con.prepareStatement(cafeMenu);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("MENU_ID");
+				String b = result1.getString("CAFE_ID");
+				String c = result1.getString("MENU_NAME");
+				String d = result1.getString("PRICE");
+				String e = result1.getString("DESCRIPTION");
+
+				System.out.println("MENU_ID: " + a + ", CAFE_ID: " + b + ", MENU_NAME: " + c + ", PRICE" + d
+						+ ", DESCRIPTION: " + e);
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	static void newCafe() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String newCafe = "INSERT INTO CAFES (CAFE_ID, NAME, ADDRESS, PHONE_NUMBER, OPERATING_HOURS)"
+					+ "VALUES(30, '컴포즈커피', '서울시 서초구 도곡동', '02-5555-1234', '09:00 ~ 22:00')";
+
+			PreparedStatement ps = con.prepareStatement(newCafe);
+			ResultSet result1 = ps.executeQuery();
+
+			int rows = ps.executeUpdate();
+			System.out.println(rows + " 추가 완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	static void updatePrice() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String update = "UPDATE MENU SET PRICE = 300 WHERE MENU_ID = 20";
+
+			PreparedStatement ps = con.prepareStatement(update);
+			ResultSet result1 = ps.executeQuery();
+
+			int rows = ps.executeUpdate();
+			System.out.println(rows + " 추가 완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	static void updateCafe() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String updateCafe = "UPDATE CAFES SET NAME = 'MEEEEE' WHERE NAME = '컴포즈커피' ";
+
+			PreparedStatement ps = con.prepareStatement(updateCafe);
+			ResultSet result1 = ps.executeQuery();
+
+			int rows = ps.executeUpdate();
+			System.out.println(rows + " 추가 완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	static void deleteCafe() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String dc = "DELETE FROM CAFES WHERE NAME = ?";
+			PreparedStatement ps = con.prepareStatement(dc);
+			ps.setString(1, "MEEEEE");
+			int rows = ps.executeUpdate();
+			System.out.println(rows + " 추가 완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	 
+	static void countMenu() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String update = "SELECT count(m.menu_id) from cafes c, menu m where name = '스타벅스' and cafe_id = m.cafe_id";
+
+			PreparedStatement ps = con.prepareStatement(update);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("cafe_id");
+				String b = result1.getString("name");
+				String c = result1.getString("address");
+				String d = result1.getString("phone_number");
+				String e = result1.getString("operating_hours");
+
+				System.out.println("cafe_id: " + a + ", name: " + b);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+
+	static void priceMenu() {
+
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String cafe = "SELECT * FROM MENU WHERE PRICE BETWEEN 3 AND 5";
+			PreparedStatement ps = con.prepareStatement(cafe);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("cafe_id");
+				String b = result1.getString("CAFE_ID");
+				String c = result1.getString("MENU_NAME");
+				String d = result1.getString("PRICE");
+				String e = result1.getString("DESCRIPTION");
+
+				System.out.println("cafe_id: " + a + ", CAFE_ID: " + b + ", MENU_NAME: " + c + ", PRICE: " + d + ", DESCRIPTION: " + e);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	static void menuInfo() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String info = "SELECT * FROM MENU WHERE MENU_NAME = '아메리카노'";
+			PreparedStatement ps = con.prepareStatement(info);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("cafe_id");
+				String b = result1.getString("CAFE_ID");
+				String c = result1.getString("MENU_NAME");
+				String d = result1.getString("PRICE");
+				String e = result1.getString("DESCRIPTION");
+
+				System.out.println("cafe_id: " + a + ", CAFE_ID: " + b + ", MENU_NAME: " + c + ", PRICE: " + d + ", DESCRIPTION: " + e);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	static void cafeInfo() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String info = "SELECT * FROM CAFES";
+			PreparedStatement ps = con.prepareStatement(info);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("CAFE_ID");
+				String b = result1.getString("NAME");
+				String c = result1.getString("ADDRESS");
+				String d = result1.getString("PHONE_NUMBER");
+				String e = result1.getString("OPERATING_HOURS");
+
+				System.out.println("CAFE_ID: " + a + ", NAME: " + b + ", ADDRESS: " + c + ", PHONE_NUMBER: " + d + ", OPERATING_HOURS: " + e);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	static void operating_hour() {
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String hour = "UPDATE CAFES SET OPERATING_HOURS = '월-토 07:00 ~ 20:00' WHERE NAME ='이디야'";
+			PreparedStatement ps = con.prepareStatement(hour);
+			ResultSet result1 = ps.executeQuery();
+
+			boolean istrue = false;
+			while (result1.next()) {
+				int a = result1.getInt("cafe_id");
+				String b = result1.getString("CAFE_ID");
+				String c = result1.getString("MENU_NAME");
+				String d = result1.getString("PRICE");
+				String e = result1.getString("DESCRIPTION");
+
+				System.out.println("cafe_id: " + a + ", CAFE_ID: " + b + ", MENU_NAME: " + c + ", PRICE: " + d + ", DESCRIPTION: " + e);
+				istrue = false;
+
+			}
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

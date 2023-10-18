@@ -1,0 +1,53 @@
+package com.kh.db.oracledb.CRUD.pre;
+
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class insertBook {
+
+	public static void main(String[] args) {
+
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khcafe";
+		String password = "kh1234";
+	
+		try {
+			Connection con = DriverManager.getConnection(url, user, password);
+			String insertSQL = "INSERT INTO BOOK (BOOK_ID, TITLE, AUTHOR, PUBLICATION_YEAR, ISBN, GENRE, DESCRIPTION, PRICE, PUBLICATION_DATE, UPDATED_DATE, IS_AVAILABLE)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = con.prepareStatement(insertSQL);
+			insertBook(ps, 23, "자바프로그래밍", "양재형", 2021, "978-1029234756", "Computer", "자바 독학을 위한 개념서", 25.99, Date.valueOf("2023-10-10"), Date.valueOf("2023-09-11"), "Y");
+			insertBook(ps, 24, "C프로그래밍", "홍길동", 2022, "978-1062384756", "Computer", "C 독학을 위한 개념서", 39.00, Date.valueOf("2023-10-10"), Date.valueOf("2023-02-12"), "Y");
+			insertBook(ps, 25, "파이썬프로그래밍", "이순신", 2023, "978-0949384756", "Computer", "파이썬 독학을 위한 개념서", 12.29, Date.valueOf("2023-10-10"), Date.valueOf("2023-01-13"), "Y");
+			insertBook(ps, 26, "HTML", "권율", 2017, "978-1029384531", "Computer", "HTML 독학을 위한 개념서", 18.29, Date.valueOf("2023-10-10"), Date.valueOf("2023-03-14"), "Y");
+			insertBook(ps, 27, "CSS", "박지성", 2014, "978-1029312356", "Computer", "CSS 독학을 위한 개념서", 17.59, Date.valueOf("2023-10-10"), Date.valueOf("2023-04-15"), "Y");
+			insertBook(ps, 28, "C#프로그래밍", "김민재", 2021, "978-1239384756", "Computer", "C# 독학을 위한 개념서", 33.22, Date.valueOf("2023-10-10"), Date.valueOf("2023-05-16"), "Y");
+			insertBook(ps, 29, "리액트", "이강인", 2001, "978-1029293856", "Computer", "리액트 독학을 위한 개념서", 15.22, Date.valueOf("2023-10-10"), Date.valueOf("2023-106-17"), "Y");
+
+			System.out.println( "row 추가됨");
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	static void insertBook(PreparedStatement ps, int book_id, String title, String author, int publication_year, String isbn, String genre, String description, double price, Date publication_date, Date updated_date, String is_avaliable) throws SQLException{
+		ps.setInt(1, book_id);
+		ps.setString(2, title);
+		ps.setString(3, author);
+		ps.setInt(4, publication_year);
+		ps.setString(5, isbn);
+		ps.setString(6, genre);
+		ps.setString(7, description);
+		ps.setDouble(8, price);
+		ps.setDate(9, publication_date);
+		ps.setDate(10, updated_date);
+		ps.setString(11, is_avaliable);
+		ps.executeUpdate();
+	}
+
+}

@@ -1,0 +1,110 @@
+package com.kh.db.oracledb.CRUD;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class selectSample {
+
+	public static void main(String[] args) {
+	}
+
+	static void SelectAll() {
+		// 1. 드라이버 연결 : Oracle JDBC 드라이버 클래스 이름
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		// 2. 오라클 내 컴퓨터 연결 : 데이터 베이스 연결 정보
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khbank";
+		String password = "1234";
+		Connection con = null;
+
+		try {
+			// 연결을 사용하여 쿼리 실행 또는 데이터베이스 작업 수행
+			con = DriverManager.getConnection(url, user, password);
+			System.out.println("DB 연결 성공");
+
+			// SELECT 쿼리
+			String selectQuery = "SELECT * FROM BANK";
+			PreparedStatement selectState = con.prepareStatement(selectQuery);
+			ResultSet result = selectState.executeQuery(selectQuery);
+			// result.next() : result 객체에서 다음 행(row)으로 이동
+			// 다음행이 있으면 true 반환, 그렇지 않으면 false
+			// khbank에 있는 bank table 결과 집합에서 account_ID를 가져옴
+
+			while (result.next()) {
+				int accountID = result.getInt("account_id");
+				String accountName = result.getString("account_name");
+				double balance = result.getDouble("balance");
+				String accountNumber = result.getString("account_number");
+				String branchName = result.getString("branch_name");
+				Date last = result.getDate("last_transaction_date");
+
+				System.out.println("ACCOUNT_ID: " + accountID + ", ACCOUNT_NUMBER: " + accountNumber
+						+ ", ACCOUNT_NAME: " + accountName + ", BALANCE: " + balance + ", BRANCH_NAME: " + branchName
+						+ ", LAST_TRANCSACTION: " + last);
+			}
+			selectState.close();
+
+		} catch (SQLException e) {
+			System.out.println("DB 연결 실패");
+			System.exit(0);
+		}
+
+	}
+
+	static void selectOne() {
+		// 1. 드라이버 연결 : Oracle JDBC 드라이버 클래스 이름
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		// 2. 오라클 내 컴퓨터 연결 : 데이터 베이스 연결 정보
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String user = "khbank";
+		String password = "1234";
+		Connection con = null;
+
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			// where 절 추가하여 조건 추가
+			String selectQuery = "SELECT* FROM BANK WHERE account_number in (?, ?, ?, ?, ?, ?) order by account_id asc";
+			PreparedStatement ps = con.prepareStatement(selectQuery);
+
+			String[] targetAN = { "1234567890", "1234567899", "02349589048", "1111222233", "5555666777", "2340956812" };
+			ps.setString(1, targetAN[0]);
+			ps.setString(2, targetAN[1]);
+			ps.setString(3, targetAN[2]);
+			ps.setString(4, targetAN[3]);
+			ps.setString(5, targetAN[4]);
+			ps.setString(6, targetAN[5]);
+
+			// 여기에 원하는 조건의 account_id 설정
+			// int targetAID = 1;
+
+			// 조건 설정
+			// ps.setInt(3, targetAID);
+
+			ResultSet result = ps.executeQuery();
+			boolean istrue = false;
+
+			while (result.next()) {
+				int a = result.getInt("account_id");
+				String b = result.getString("account_number");
+				String c = result.getString("account_name");
+				int d = result.getInt("balance");
+				String e = result.getString("branch_name");
+				Date f = result.getDate("last_transaction_date");
+				System.out.println("ACCOUNT ID: " + a + ", ACCOUNT NUMBER: " + b + ", ACCOUNT_NAME: " + c
+						+ ", BALANCE: " + d + ", BRANCH NAME: " + e + ", DATE: " + f);
+				istrue = true;
+			}
+
+			if (!istrue) {
+				System.out.println("조건에 해당하는 데이터가 없습니다");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
