@@ -313,19 +313,10 @@ public class practice1 {
 			ps.setString(1, "031-111-3333");
 			ResultSet result1 = ps.executeQuery();
 			
-			boolean istrue = false;
 			while (result1.next()) {
-				int a = result1.getInt("CAFE_ID");
-				String b = result1.getString("NAME");
-				String c = result1.getString("ADDRESS");
-				String d = result1.getString("PHONE_NUMBER");
-				String e = result1.getString("OPERATING_HOURS");
 
-				System.out.println(result1);
+				System.out.println();
 
-			}
-			if (!istrue) {
-				System.out.println("조건에 해당하는 데이터가 없습니다");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
